@@ -6,30 +6,9 @@
     </a>
 </li>
 
-@if(Auth::user()->can('annual-demand-list') )
-    <li class="nav-item">
-        <a href="{{route('annual_demands.index')}}" class="nav-link
-                {{ request()->routeIs('annual_demands*')?'active':'' }}">
-            <i class="nav-icon fas fa-paper-plane"></i>
-            <p>Annual Demand</p>
-        </a>
-    </li>
-@endif
-
-@if(Auth::user()->can('demand-from-location-list') )
-    <li class="nav-item">
-        <a href="{{route('demand_from_locations.index')}}" class="nav-link
-                    {{ request()->routeIs('demand_from_locations*')?'active':'' }}">
-            <i class="nav-icon fas fa-shipping-fast text-olive"></i>
-            <p>Demand from Loc</p>
-        </a>
-    </li>
-@endif
-
-<li class="nav-item {{ request()->routeIs('menus*') || request()->routeIs('ration_times*') || request()->routeIs('ration_types*') || request()->routeIs('ration_dates*') || request()->routeIs('items*') ||
-                    request()->routeIs('location_types*') || request()->routeIs('locations*') || request()->routeIs('item_categories*') || request()->routeIs('ration_categories*') || request()->routeIs('brands*') ||
-                    request()->routeIs('quarters*') || request()->routeIs('measurements*') || request()->routeIs('receipt_types*') || request()->routeIs('suppliers*')||
-                    request()->routeIs('ration_sub_categories*')?'menu-open':'' }}">
+<li class="nav-item {{ request()->routeIs('items*') ||
+                    request()->routeIs('location_types*') || request()->routeIs('locations*') || request()->routeIs('item_categories*') || request()->routeIs('brands*') ||
+                    request()->routeIs('measurements*') || request()->routeIs('suppliers*')?'menu-open':'' }}">
     <a href="#" class="nav-link">
         <i class="nav-icon fas fa-cogs text-blue"></i>
         <p>Master Data<i class="right fas fa-angle-left text-blue"></i></p>
@@ -56,28 +35,6 @@
                 </a>
             </li>
         @endif
-
-        @if(Auth::user()->can('master-ration-categories-list') )
-            <li class="nav-item">
-                <a href="{{route('ration_categories.index')}}" class="nav-link
-                    {{ request()->routeIs('ration_categories*')?'active':'' }}">
-                    <i class="far fa-circle nav-icon text-blue"></i>
-                    <p>Ration Category</p>
-                </a>
-            </li>
-        @endif
-
-        {{-- @if(Auth::user()->can('master-supplier-list') ) --}}
-
-            <li class="nav-item">
-                <a href="{{route('ration_sub_categories.index')}}" class="nav-link
-                    {{ request()->routeIs('ration_sub_categories*')?'active':'' }}">
-                    <i class="far fa-circle nav-icon text-blue"></i>
-                    <p>Ration Sub Category</p>
-                </a>
-            </li>
-
-        {{-- @endif --}}
 
         @if(Auth::user()->can('master-item-categories-list') )
             <li class="nav-item">
@@ -109,26 +66,6 @@
             </li>
         @endif
 
-        @if(Auth::user()->can('master-quarter-list') )
-            <li class="nav-item">
-                <a href="{{route('quarters.index')}}" class="nav-link
-                    {{ request()->routeIs('quarters*')?'active':'' }}">
-                    <i class="far fa-circle nav-icon text-blue"></i>
-                    <p>Quarter</p>
-                </a>
-            </li>
-        @endif
-
-        @if (Auth::user()->can('master-approved-unit-price-list'))
-            <li class="nav-item">
-                <a href="{{route('approved_unit_price.index')}}" class="nav-link
-                    {{ request()->routeIs('approved_unit_price*')?'active':'' }}">
-                    <i class="far fa-circle nav-icon text-blue"></i>
-                    <p>Approved Price</p>
-                </a>
-            </li>
-        @endif
-
         @if(Auth::user()->can('master-measurement-list') )
             <li class="nav-item">
                 <a href="{{route('measurements.index')}}" class="nav-link
@@ -139,77 +76,18 @@
             </li>
         @endif
 
-        @if(Auth::user()->can('master-receipt-type-list') )
-            <li class="nav-item">
-                <a href="{{route('receipt_types.index')}}" class="nav-link
-                    {{ request()->routeIs('receipt_types*')?'active':'' }}">
-                    <i class="far fa-circle nav-icon text-blue"></i>
-                    <p>Receipt Type</p>
-                </a>
-            </li>
+        @if(Auth::user()->can('master-supplier-list') )
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{route('suppliers.index')}}" class="nav-link
+                        {{ request()->routeIs('suppliers*')?'active':'' }}">
+                        <i class="far fa-circle nav-icon text-blue"></i>
+                        <p>Suppliers</p>
+                    </a>
+                </li>
+            </ul>
         @endif
-
     </ul>
-
-    @if(Auth::user()->can('master-ration-date-list') )
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
-                <a href="{{route('ration_dates.index')}}" class="nav-link
-                    {{ request()->routeIs('ration_dates*')?'active':'' }}">
-                    <i class="far fa-circle nav-icon text-blue"></i>
-                    <p>Ration Dates</p>
-                </a>
-            </li>
-        </ul>
-    @endif
-
-    @if(Auth::user()->can('master-ration-type-list') )
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
-                <a href="{{route('ration_types.index')}}" class="nav-link
-                    {{ request()->routeIs('ration_types*')?'active':'' }}">
-                    <i class="far fa-circle nav-icon text-blue"></i>
-                    <p>Ration Types</p>
-                </a>
-            </li>
-        </ul>
-    @endif
-
-    @if(Auth::user()->can('master-ration-time-list') )
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
-                <a href="{{route('ration_times.index')}}" class="nav-link
-                    {{ request()->routeIs('ration_times*')?'active':'' }}">
-                    <i class="far fa-circle nav-icon text-blue"></i>
-                    <p>Meal Type</p>
-                </a>
-            </li>
-        </ul>
-    @endif
-
-    @if(Auth::user()->can('master-menu-list') )
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
-                <a href="{{route('menus.index')}}" class="nav-link
-                    {{ request()->routeIs('menus*')?'active':'' }}">
-                    <i class="far fa-circle nav-icon text-blue"></i>
-                    <p>Menu</p>
-                </a>
-            </li>
-        </ul>
-    @endif
-
-    @if(Auth::user()->can('master-supplier-list') )
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
-                <a href="{{route('suppliers.index')}}" class="nav-link
-                    {{ request()->routeIs('suppliers*')?'active':'' }}">
-                    <i class="far fa-circle nav-icon text-blue"></i>
-                    <p>Suppliers</p>
-                </a>
-            </li>
-        </ul>
-    @endif
 
 </li>
 
@@ -259,7 +137,6 @@
                 </li>
             </ul>
         @endcan
-
 
     </li>
 @endcan

@@ -10,7 +10,7 @@ class LoginDetail extends Model
 {
     use HasFactory;
     protected $table = 'login_details';
-    protected $fillable = [        
+    protected $fillable = [
         'user_id',
         'login_ip',
     ];

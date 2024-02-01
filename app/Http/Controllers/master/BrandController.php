@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\master;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\DataTables\master\BrandDataTable;
 use App\Models\master\Brand;
-use App\Http\Requests\master\StoreBrandRequest;
-use App\Http\Requests\master\UpdateBrandRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreBrandRequest;
+use App\DataTables\master\BrandDataTable;
+use App\Http\Requests\UpdateBrandRequest;
 
 class BrandController extends Controller
 {

@@ -12,7 +12,7 @@
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item ">Master Data</li>
-                            <li class="breadcrumb-item ">Location Type Management</li>
+                            <li class="breadcrumb-item ">Location Management</li>
                             <li class="breadcrumb-item active">Create</li>
                         </ol>
                     </div>
@@ -59,6 +59,21 @@
                                     <span class="text-danger">@error('name') {{ $message }} @enderror</span>
                                 </div>
                             </div>
+
+                            <div class="form-group row">
+                                <label for="under_cmd_location_id" class="col-sm-2 col-form-label">Under Command Location</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control select2" name="under_cmd_location_id" id="under_cmd_location_id"
+                                            autocomplete="off">
+                                        <option value="" selected>select one</option>
+                                        @foreach($locations as $item)
+                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="text-danger">@error('under_cmd_location_id') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="card-footer">

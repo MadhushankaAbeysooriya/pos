@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\master;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\DataTables\master\MeasurementDataTable;
 use App\Models\master\Measurement;
-use App\Http\Requests\master\StoreMeasurementRequest;
-use App\Http\Requests\master\UpdateMeasurementRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreMeasurementRequest;
+use App\DataTables\master\MeasurementDataTable;
+use App\Http\Requests\UpdateMeasurementRequest;
 
 class MeasurementController extends Controller
 {

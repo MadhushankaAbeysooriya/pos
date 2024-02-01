@@ -33,8 +33,9 @@ class LocationController extends Controller
      */
     public function create()
     {
-        $locationTypes = LocationType::get();
-        return view('master.locations.create', compact('locationTypes'));
+        $locationTypes = LocationType::all();
+        $locations = Location::whereIn('location_type_id', [1])->get();
+        return view('master.locations.create', compact('locationTypes', 'locations'));
     }
 
     /**
@@ -51,9 +52,7 @@ class LocationController extends Controller
      */
     public function show($id)
     {
-        $location = Location::join('location_types','location_types.id','=','locations.location_type_id')
-        ->where('locations.id',$id)
-        ->get(['locations.name','location_types.name as locationTypes']);
+        $location = Location::findOrFail($id);
 
         return view('master.locations.show',compact('location'));
     }
@@ -63,13 +62,13 @@ class LocationController extends Controller
      */
     public function edit($id)
     {
-        $locationTypes = LocationType::get();
+        $location = Location::findOrFail($id);
 
-        $location = Location::leftJoin('location_types','location_types.id','=','locations.location_type_id')
-            ->where('locations.id',$id)
-            ->get(['locations.name','locations.id','location_types.id as location_type_id','location_types.name as location_type_name']);
+        $locationTypes = LocationType::all();
 
-        return view('master.locations.edit',compact('location','locationTypes'));
+        $locations = Location::whereIn('location_type_id', [1])->get();
+
+        return view('master.locations.edit',compact('locations', 'locationTypes', 'location'));
     }
 
     /**

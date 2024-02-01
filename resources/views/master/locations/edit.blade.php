@@ -32,7 +32,7 @@
                     </div> --}}
                 </div>
 
-                <form role="form" action="{{ route('locations.update',$location[0]->id) }}" method="post"
+                <form role="form" action="{{ route('locations.update',$location->id) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -43,8 +43,8 @@
                             <label for="location_type_id" class="col-sm-2 col-form-label">Location Type</label>
                             <div class="col-sm-6">
                                 <select class="form-control" name="location_type_id" id="location_type_id" autocomplete="off">
-                                    @foreach($locationTypes as $locationType)
-                                        <option {{isset($location[0]->id)?$location[0]->id==$locationType->id?'selected':'':''}} value="{{$locationType->id}}">{{$locationType->name}}</option>
+                                    @foreach($locationTypes as $item)
+                                        <option value="{{$item->id}}" {{$location->location_type_id == $item->id ?'selected':''}}>{{$item->name}}</option>
                                     @endforeach
                                 </select>
                                 <span class="text-danger">@error('location_type_id') {{ $message }} @enderror</span>
@@ -55,8 +55,22 @@
                             <label for="name" class="col-sm-2 col-form-label">Name</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control @error('name')
-                                is-invalid @enderror" name="name" value="{{ $location[0]->name }}" id="name" autocomplete="off">
+                                is-invalid @enderror" name="name" value="{{ $location->name }}" id="name" autocomplete="off">
                                 <span class="text-danger">@error('name') {{ $message }} @enderror</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="under_cmd_location_id" class="col-sm-2 col-form-label">Under Command Location</label>
+                            <div class="col-sm-6">
+                                <select class="form-control select2" name="under_cmd_location_id" id="under_cmd_location_id"
+                                        autocomplete="off">
+                                    <option value="" selected>select one</option>
+                                    @foreach($locations as $item)
+                                        <option value="{{$item->id}}" {{$location->under_cmd_location_id == $item->id ?'selected':''}}>{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                                <span class="text-danger">@error('under_cmd_location_id') {{ $message }} @enderror</span>
                             </div>
                         </div>
 

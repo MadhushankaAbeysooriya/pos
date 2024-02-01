@@ -75,7 +75,7 @@
                                         @endif
                                     @endforeach
 
-                                    <div class="col-md-12">
+                                    {{-- <div class="col-md-12">
                                         <label class="mt-3 mb-3 text-danger">Annual Demand</label>
                                     </div>
                                     @foreach($permission as $value)
@@ -97,7 +97,7 @@
                                                     {{ ucwords(str_replace(['-'], " ",$value->name)) }}</label>
                                             </div>
                                         @endif
-                                    @endforeach
+                                    @endforeach --}}
 
                                 </div>
                             </div>
