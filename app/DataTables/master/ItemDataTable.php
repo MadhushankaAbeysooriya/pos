@@ -24,19 +24,9 @@ class ItemDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->addColumn('is_vat', function($item){
-                return ($item->is_vat==1)?'<h5><span class="badge badge-primary">VAT</span></h5>':
-                '<h5><span class="badge badge-warning">Non - VAT</span></h5>';
-            })
             ->addColumn('action', function ($item) {
                 $id = $item->id;
                 $btn = '';
-
-                if (Auth::user()->can('master-item-add-alternative-item')) {
-                    $btn .= '<a href="' . route('items.add_alternative_view', $id) . '"
-                    class="btn btn-xs btn-success" data-toggle="tooltip" title="Add Alternatives">
-                    <i class="fas fa-plus"></i> </a> ';
-                }
 
                 if (Auth::user()->can('master-item-edit')) {
                     $btn .= '<a href="' . route('items.edit', $id) . '"
@@ -62,7 +52,7 @@ class ItemDataTable extends DataTable
      */
     public function query(Item $model): QueryBuilder
     {
-        return $model->newQuery()->with(['itemcategory','measurement','rationsubcategory']);
+        return $model->newQuery()->with(['itemcategory','measurement','brand']);
     }
 
     /**
@@ -96,8 +86,7 @@ class ItemDataTable extends DataTable
             Column::make('name')->data('name')->title('Name'),
             Column::make('itemcategory.name')->data('itemcategory.name')->title('Category'),
             Column::make('measurement.name')->data('measurement.name')->title('Measurement'),
-            Column::make('rationsubcategory.name')->data('rationsubcategory.name')->title('Ration Category'),
-            Column::make('is_vat')->data('is_vat')->title('VAT'),
+            Column::make('brand.name')->data('brand.name')->title('Brand'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

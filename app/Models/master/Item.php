@@ -2,6 +2,7 @@
 
 namespace App\Models\master;
 
+use App\Models\master\Brand;
 use App\Models\master\Measurement;
 use App\Models\master\ItemCategory;
 use App\Models\master\RationCategory;
@@ -17,11 +18,13 @@ class Item extends Model
     protected $table = 'items';
     protected $fillable = [
         'name',
+        'barcode',
         'item_category_id',
-        'ration_sub_category_id',
         'measurement_id',
+        'brand_id',
+        'rol',
+        'product_image',
         'deleted_at',
-        'is_vat',
     ];
 
     public function itemcategory()
@@ -34,13 +37,8 @@ class Item extends Model
         return $this->belongsTo(Measurement::class,'measurement_id','id');
     }
 
-    // public function rationcategory()
-    // {
-    //     return $this->belongsTo(RationCategory::class,'ration_category_id','id');
-    // }
-
-    public function rationsubcategory()
+    public function brand()
     {
-        return $this->belongsTo(RationSubCategory::class,'ration_sub_category_id','id');
+        return $this->belongsTo(Brand::class,'brand_id','id');
     }
 }

@@ -39,84 +39,98 @@
 
                     <div class="card-body">
 
-                        <div class="form-group row">
-                            <label for="item_category_id" class="col-sm-2 col-form-label">Item Category</label>
-                            <div class="col-sm-6">
-                                <select class="form-control" name="item_category_id" id="item_category_id" autocomplete="off">
-                                    <option value="" selected>select one</option>
-                                    @foreach($itemCategorys as $itemCategory)
-                                        <option {{isset($item->item_category_id)?$item->item_category_id==$itemCategory->id?'selected':'':''}} value="{{$itemCategory->id}}">{{$itemCategory->name}}</option>
-                                    @endforeach
-                                </select>
-                                <span class="text-danger">@error('item_category_id') {{ $message }} @enderror</span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="name" class="col-sm-2 col-form-label">Name</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control @error('name')
-                                        is-invalid @enderror" name="name" value="{{ isset($item->name)?$item->name:'' }}" id="name" autocomplete="off">
-                                <span class="text-danger">@error('name') {{ $message }} @enderror</span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="measurement_id" class="col-sm-2 col-form-label">Demomination</label>
-                            <div class="col-sm-6">
-                                <select class="form-control" name="measurement_id" id="measurement_id" autocomplete="off">
-                                    <option value="" selected>select one</option>
-                                    @foreach($measurements as $measurement)
-                                        <option {{isset($item->measurement_id)?$item->measurement_id==$measurement->id?'selected':'':''}} value="{{$measurement->id}}">{{$measurement->name}}</option>
-                                    @endforeach
-                                </select>
-                                <span class="text-danger">@error('measurement_id') {{ $message }} @enderror</span>
-                            </div>
-                        </div>
-
-                        {{-- <div class="form-group row">
-                            <label for="ration_category_id" class="col-sm-2 col-form-label">Ration Category</label>
-                            <div class="col-sm-6">
-                                <select class="form-control" name="ration_category_id" id="ration_category_id" autocomplete="off">
-                                    <option value="" selected>select one</option>
-                                    @foreach($rationCategories as $rationCategory)
-                                        <option {{isset($item->ration_category_id)?$item->ration_category_id==$rationCategory->id?'selected':'':''}} value="{{$rationCategory->id}}">{{$rationCategory->name}}</option>
-                                    @endforeach
-                                </select>
-                                <span class="text-danger">@error('ration_category_id') {{ $message }} @enderror</span>
-                            </div>
-                        </div> --}}
-
-                        <div class="form-group row">
-                            <label for="ration_sub_category_id" class="col-sm-2 col-form-label">Ration Sub Category</label>
-                            <div class="col-sm-6">
-                                <select class="form-control" name="ration_sub_category_id" id="ration_sub_category_id" autocomplete="off">
-                                    <option value="" selected>select one</option>
-                                    @foreach($rationSubCategories as $rationsubcat)
-                                        <option {{isset($item->ration_sub_category_id)?$item->ration_sub_category_id==$rationsubcat->id?'selected':'':''}} value="{{$rationsubcat->id}}">{{$rationsubcat->name}}</option>
-                                    @endforeach
-                                </select>
-                                <span class="text-danger">@error('ration_sub_category_id') {{ $message }} @enderror</span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-sm-2 col-form-label" for="is_vat">VAT Number Available..? </label>
-                            <div class="col-sm-9">
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="customSwitch1" name="is_vat" {{ $item->is_vat ? 'checked' : '' }}>
-                                    <label class="custom-control-label" for="customSwitch1" id="isVatLabel">
-                                        {{ $item->is_vat ? 'Yes' : 'No' }}
-                                    </label>
-                                    <input type="hidden" name="is_vat" value="0"> <!-- Hidden field for unchecked state -->
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Name<span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control @error('name')
+                                        is-invalid @enderror" name="name" value="{{ $item->name }}" id="name"
+                                        autocomplete="off">
+                                    <span class="text-danger">@error('name') {{ $message }} @enderror</span>
                                 </div>
-
-                                @error('is_vat')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
                             </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Barcode<span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control @error('barcode')
+                                        is-invalid @enderror" name="barcode" value="{{ $item->barcode }}" id="barcode"
+                                        autocomplete="off">
+                                    <span class="text-danger">@error('barcode') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Item Category<span style="color: red;">*</span></span></label>
+                                    <select class="form-control select2" name="item_category_id" id="item_category_id" autocomplete="off">
+                                            <option value="">Please Select</option>
+                                            @foreach($itemCategorys as $itemCategory)
+                                                <option value="{{$itemCategory->id}}" {{$item->item_category_id == $itemCategory->id ?'selected':''}}>{{$itemCategory->name}}</option>
+                                            @endforeach
+                                    </select>
+                                    <span class="text-danger">@error('item_category_id') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Denomination<span style="color: red;">*</span></span></label>
+                                    <select class="form-control select2" name="measurement_id" id="measurement_id"
+                                            autocomplete="off">
+                                        <option value="">Please Select</option>
+                                        @foreach($measurements as $measurement)
+                                            <option value="{{$measurement->id}}" {{$item->measurement_id == $measurement->id ?'selected':''}}>{{$measurement->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="text-danger">@error('measurement_id') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Brand</span></label>
+                                    <select class="form-control select2" name="brand_id" id="brand_id"
+                                            autocomplete="off">
+                                        <option value="">Please Select</option>
+                                        @foreach($brands as $brand)
+                                            <option value="{{$brand->id}}" {{$item->brand_id == $brand->id ?'selected':''}}>{{$brand->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="text-danger">@error('brand_id') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Alert Quantity<span style="color: red;">* </span>
+                                        <i class="fa fa-exclamation-circle text-info hover-q no-print" data-toggle="tooltip" data-html="true"
+                                        title="Get alert when product stock reaches or goes below
+                                        the specified quantity.<br><br><small class='text-muted'>Products with low stock will be displayed in
+                                        dashboard - Product Stock Alert section.</small>"></i>
+                                    </label>
+                                    <input type="text" class="form-control @error('rol')
+                                        is-invalid @enderror" name="rol" value="{{ $item->rol }}" id="rol"
+                                        autocomplete="off">
+                                    <span class="text-danger">@error('rol') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+
+                            {{-- <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Product Image</label>
+                                        {{-- <input type="file" name="product_image" class="custom-file-input @error('product_image') is-invalid @enderror" id="product_image" value="{{ old('product_image') }}"
+                                        accept=".jpeg,.png,.jpg">
+                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                        <span class="text-danger">@error('product_image') {{ $message }} @enderror</span> --}}
+
+                            {{--            <input type="file" class="form-control @error('product_image') is-invalid @enderror" name="product_image" value="{{ old('product_image') }}" accept=".jpeg,.png,.jpg">
+                                        <span class="text-danger">@error('product_image') {{ $message }} @enderror</span>
+                                </div>
+                            </div> --}}
+
                         </div>
 
                     </div>
@@ -138,34 +152,12 @@
 
 @push('page_scripts')
 
-    <script>
+<script>
 
-        $(document).ready(function () {
-            $('.select2').select2();
+    $(document).ready(function () {
+        $('.select2').select2();
+    });
 
-            function updateValue() {
-                if ($('#customSwitch1').prop('checked')) {
-                    $('#isVatLabel').text('Yes');
-                    $('input[name="is_vat"]').val(1);
-                } else {
-                    $('#isVatLabel').text('No');
-                    $('input[name="is_vat"]').val(0);
-                }
-            }
-
-            // Set initial value on page load
-            updateValue();
-
-            // Handle change event
-            $('#customSwitch1').change(updateValue);
-
-            // Submit form event
-            $('form').submit(function() {
-                // Ensure that the hidden input value is set based on the checkbox state
-                updateValue();
-            });
-        });
-
-    </script>
+</script>
 
 @endpush

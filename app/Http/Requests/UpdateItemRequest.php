@@ -22,11 +22,13 @@ class UpdateItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:items,name,' . $this->item->id . ',id,item_category_id,' . request('item_category_id'),
-            'measurement_id' => 'required:items',
-            'ration_sub_category_id' => 'required:items',
-            'item_category_id' => 'required:items',
-            'is_vat' => 'required',
+            'name' => 'required|unique:items,name,' . $this->item->id,
+            'barcode' => 'required|unique:items,barcode,' . $this->item->id,
+            'item_category_id' => 'required',
+            'measurement_id' => 'required',
+            'brand_id',
+            'rol' => 'required|integer|min:0',
+            'product_image',
         ];
 
     }
@@ -35,10 +37,14 @@ class UpdateItemRequest extends FormRequest
     {
         return [
             'name.required' => 'The Name field is required.',
-            'measurement_id.required' => 'The measurement field is required.',
-            'ration_sub_category_id.required' => 'This ration category field is required.',
+            'name.unique' => 'The Name already exist.',
+            'barcode.required' => 'The Barcode field is required.',
+            'barcode.unique' => 'The Barcode already exist.',
             'item_category_id.required' => 'This item category field is required.',
-            'is_vat.required' => 'VAT Available is required.',
+            'measurement_id.required' => 'The measurement field is required.',
+            'rol.required' => 'The Alert Quantity field is required.',
+            'rol.integer' => 'The Alert Quantity must be an integer.',
+            'rol.min' => 'The Alert Quantity must be more than 0.',
         ];
     }
 }

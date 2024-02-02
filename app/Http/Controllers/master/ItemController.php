@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\master;
 
+use Exception;
 use App\Models\master\Item;
+use App\Models\master\Brand;
 use Illuminate\Http\Request;
 use App\Models\master\RationType;
 use App\Models\master\Measurement;
+use Illuminate\Support\Facades\DB;
 use App\Models\master\ItemCategory;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use App\Models\master\RationCategory;
 use App\Models\master\AlternativeItem;
 use App\Http\Requests\StoreItemRequest;
@@ -40,10 +44,11 @@ class ItemController extends Controller
      */
     public function create()
     {
-        $measurements = Measurement::get();
-        $rationSubCategories = RationSubCategory::get();
-        $itemCategorys = ItemCategory::get();
-        return view('master.items.create', compact('measurements','rationSubCategories','itemCategorys'));
+        $measurements = Measurement::all();
+        $itemCategorys = ItemCategory::all();
+        $brands = Brand::all();
+
+        return view('master.items.create', compact('measurements','itemCategorys','brands'));
     }
 
     /**
@@ -51,9 +56,45 @@ class ItemController extends Controller
      */
     public function store(StoreItemRequest $request)
     {
+        try {
+            DB::beginTransaction();
 
-        Item::create($request->all());
-        return redirect()->route('items.index')->with('success','Item Created');
+            // Create the item
+            $item = Item::create($request->all());
+
+            if ($request->hasFile('product_image')) {
+                // Define the destination path for personal photos
+                $destinationProductImage = public_path('/upload/productimage/'.$item->id.'/');
+
+                // Ensure the destination directory exists, create it if not
+                if (!File::isDirectory($destinationProductImage)) {
+                    File::makeDirectory($destinationProductImage, 0777, true, true);
+                }
+
+                // Generate a unique filename for the uploaded product_image
+                $extProductImage = $request->file('product_image')->extension();
+                $fileProductImage = $item->id.'.'.$extProductImage;
+
+                // Move the uploaded file to the destination
+                $request->file('product_image')->move($destinationProductImage, $fileProductImage);
+
+                // Update the item record with the product_image path
+                $item->update([
+                    'product_image' => '/upload/productimage/'.$item->id.'/'.$fileProductImage,
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect()->route('items.index')->with('success', 'Item Created');
+        } catch (Exception $e) {
+            // If an exception occurs, rollback the database transaction
+            DB::rollBack();
+
+            // Log or handle the exception as needed
+            return redirect()->back()->with('error', 'Failed to create item. ' . $e->getMessage());
+        }
+
     }
 
     /**
@@ -61,16 +102,9 @@ class ItemController extends Controller
      */
     public function show($id)
     {
-        $measurements = Measurement::get();
-        $rationSubCategories = RationSubCategory::get();
-        $itemCategorys = ItemCategory::get();
+        $item =  Item::findOrFail($id);
 
-        $item =  Item::with(['itemCategory', 'measurement', 'rationCategory'])
-            ->where('id', $id)
-            ->select('id', 'name', 'item_category_id', 'measurement_id', 'ration_category_id')
-            ->first();
-
-        return view('master.items.show',compact('item','measurements','rationSubCategories','itemCategorys'));
+        return view('master.items.show',compact('item','measurements','itemCategorys'));
     }
 
     /**
@@ -78,14 +112,13 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
-        //dd($id);
-        $measurements = Measurement::get();
-        $rationSubCategories = RationSubCategory::get();
-        $itemCategorys = ItemCategory::get();
+        $measurements = Measurement::all();
+        $itemCategorys = ItemCategory::all();
+        $brands = Brand::all();
 
-        $item =  Item::find($id);
+        $item =  Item::findOrFail($id);
 
-        return view('master.items.edit',compact('item','measurements','rationSubCategories','itemCategorys'));
+        return view('master.items.edit',compact('item','measurements','itemCategorys','brands'));
     }
 
     /**
@@ -108,47 +141,4 @@ class ItemController extends Controller
             ->with('danger', 'Item Deleted successfully');
     }
 
-    public function addAlternativeView($id)
-    {
-        $items = Item::get();
-        $item =  Item::find($id);
-        $alternativeItems = AlternativeItem::with(['Item'])
-                            ->where('item_id',$id)
-                            ->get();
-
-        return view('master.items.create_alternative_items',compact('item','items','alternativeItems'));
-    }
-
-    public function saveAlternative(StoreAlternativeItemRequest $request, $id)
-    {
-
-//        dd('pass');
-        AlternativeItem::create($request->all());
-
-        $items = Item::get();
-        $item =  Item::find($id);
-
-        $alternativeItems = AlternativeItem::with(['Item'])
-                            ->where('item_id',$id)
-                            ->get();
-
-        return view('master.items.create_alternative_items',compact('item','items','alternativeItems'))->with('message', 'Alternative');
-
-    }
-
-
-    public function deleteAlternative(Request $request, $id)
-    {
-
-        AlternativeItem::where('id', $id)->forceDelete();
-
-        $items = Item::get();
-        $item =  Item::find($id);
-
-        $alternativeItems = AlternativeItem::with(['item'])
-                            ->where('item_id',$request->item_id)
-                            ->get();
-
-        return view('master.items.create_alternative_items',compact('item','items','alternativeItems'));
-    }
 }
